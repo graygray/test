@@ -44,22 +44,41 @@ void callbackfunc()
 	printf(" %s\n", __FUNCTION__);
 }
 
-int main() {
+int main(int argc, char *argv[])
+{
 
-	printf("start %s\n", __FUNCTION__);
+	printf("argc:%d \n", argc);
 
-	Fibonacci(5, callbackfunc);
+	if( argc < 2 )
+	{
+		printf("need at least one params\n");
+		getchar();
+		return -1;
+	}
 
-	printf("%d\n", 5^10);
+	int var;
+	for (var = 0; var < argc; ++var) {
+		printf("argv[%d]:%s \n", var, argv[var]);
+	}
 
-	/*test assert*/
-//	assert(1 == 2);
-//	printf("continous\n");
+	printf("=====================================\n");
+	// cases -------------------------------------------------
+	if ( !strcmp(argv[1], "test") ) {
 
-	/*print ascii*/
-//	for (int var = 0; var < 129; ++var) {
-//	    printf("%c\t", var);
-//	}
+		printf("test!! \n");
+
+	} else if (!strcmp(argv[1], "test2")) {
+
+	} else if (!strcmp(argv[1], "test3")) {
+
+	} else if (!strcmp(argv[1], "test4")) {
+
+	} else {
+
+		printf("not a case!! \n");
+
+	}
+	printf("=====================================\n");
 
 //	getchar();
 	return 0;
