@@ -8,6 +8,11 @@ using namespace std;
 
 #define MIN(a,b) (a>b) ? b : a
 
+void default_func_test(int val=2){
+
+	printf(" default_func_test\n");
+	printf(" val=%d\n", val);
+}
 
 int Min(int a,int b, int c)
 {
@@ -56,7 +61,7 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	int var;
+	int var, i=0;
 	for (var = 0; var < argc; ++var) {
 		printf("argv[%d]:%s \n", var, argv[var]);
 	}
@@ -67,11 +72,38 @@ int main(int argc, char *argv[])
 
 		printf("test!! \n");
 
-	} else if (!strcmp(argv[1], "test2")) {
+	// open bin file
+	} else if (!strcmp(argv[1], "obf")) {
 
-	} else if (!strcmp(argv[1], "test3")) {
+		printf("[gray] test.cpp:%s:%d\n", __FUNCTION__, __LINE__);
+		FILE *fp;
 
-	} else if (!strcmp(argv[1], "test4")) {
+		fp = fopen("T2051.bin", "rb");
+		if (!fp) {
+			printf("[gray] test.cpp:%s:%d, open fail\n", __FUNCTION__, __LINE__);
+			fclose(fp);
+			return -1;
+		}
+
+		unsigned char c;
+		c = fgetc(fp);
+		while(!feof(fp))
+		{
+			i++;
+			printf("%02X ", c);
+			c = fgetc(fp);
+		}
+		printf("\n");
+		printf("[gray] test.cpp:%s:%d, len:%d\n", __FUNCTION__, __LINE__, i);
+		printf("\n");
+
+		fclose(fp);
+
+	// CRC
+	} else if (!strcmp(argv[1], "crc")) {
+
+		printf("[gray] test.cpp:%s:%d\n", __FUNCTION__, __LINE__);
+
 
 	} else {
 
@@ -80,9 +112,9 @@ int main(int argc, char *argv[])
 	}
 	printf("=====================================\n");
 
+
+
 //	getchar();
 	return 0;
 
 }
-
-
