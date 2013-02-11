@@ -14,6 +14,48 @@ void default_func_test(int val=2){
 	printf(" val=%d\n", val);
 }
 
+unsigned char crc(
+		unsigned int data, unsigned int data_len,
+		unsigned int gen, unsigned int gen_len) {
+
+	unsigned int res;
+	unsigned int temp;
+	int i;
+
+	printf("[gray] test.cpp:%s:%d, data:0x%X\n", __FUNCTION__, __LINE__, data);
+
+	data = data << gen_len;
+	printf("[gray] test.cpp:%s:%d, data:0x%X\n", __FUNCTION__, __LINE__, data);
+
+	temp = data >> data_len;
+	printf("[gray] test.cpp:%s:%d, temp:0x%X\n", __FUNCTION__, __LINE__, temp);
+	temp = temp ^ gen;
+
+	for (i = 0; i < data_len-1; ++i) {
+
+		printf("[gray] test.cpp:%s:%d, temp:0x%X\n", __FUNCTION__, __LINE__, temp);
+		temp = temp << 1;
+		printf("[gray] test.cpp:%s:%d, temp:0x%X\n", __FUNCTION__, __LINE__, temp);
+//		printf("[gray] test.cpp:%s:%d, --0x%X\n", __FUNCTION__, __LINE__, ( (data >> (data_len-(i+1))) & 1));
+		temp = temp | ( (data >> (data_len-(i+1))) & 1);
+		printf("[gray] test.cpp:%s:%d, temp:0x%X\n", __FUNCTION__, __LINE__, temp);
+
+		if (temp >> gen_len-1 & 1) {
+
+			printf("[gray] 1\n");
+			temp = temp ^ gen;
+
+		} else {
+			printf("[gray] 0\n");
+			continue;
+		}
+
+	}
+	res = temp;
+	return res;
+
+}
+
 int Min(int a,int b, int c)
 {
 //	(a<=b && a<=c) ? return a :  b;
@@ -103,6 +145,7 @@ int main(int argc, char *argv[])
 	} else if (!strcmp(argv[1], "crc")) {
 
 		printf("[gray] test.cpp:%s:%d\n", __FUNCTION__, __LINE__);
+		printf("[gray] test.cpp:%s:%d, crc:0x%X\n", __FUNCTION__, __LINE__, crc(0x35B, 10, 0x13, 5));
 
 
 	} else {
