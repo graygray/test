@@ -18,7 +18,6 @@ void default_func_test(int val=2){
 
 //#define POLY 0x1021
 #define POLY 0x8810
-//
 //#define POLY 0x8408
 unsigned short crc16(unsigned char *data_p, unsigned short length)
 {
@@ -234,8 +233,8 @@ int main(int argc, char *argv[])
 		memset(buf, 0, sizeof(buf));
 
 		fp = fopen("Y0199.bin", "rb");
-		fp = fopen("T2051.bin", "rb");
-		fp = fopen("C0877.bin", "rb");
+//		fp = fopen("T2051.bin", "rb");
+//		fp = fopen("C0877.bin", "rb");
 		if (!fp) {
 			printf("[gray] test.cpp:%s:%d, open fail\n", __FUNCTION__, __LINE__);
 			fclose(fp);
@@ -246,27 +245,28 @@ int main(int argc, char *argv[])
 		c = fgetc(fp);
 		while(!feof(fp))
 		{
-			printf("%02X ", c);
-			buf[i] = c;
+			printf("%02X ", c);		// print file content
+			buf[i] = c;				// read to buffer
 			i++;
 			c = fgetc(fp);
 		}
 		printf("\n");
 		printf("[gray] test.cpp:%s:%d, len:%d\n", __FUNCTION__, __LINE__, i);
 		printf("\n");
-
 		fclose(fp);
 
+		// crc16
 		printf("[gray] test.cpp:%s:%d, mycrc:0x%X\n", __FUNCTION__, __LINE__, crc(buf, i, 0x04C11DB7 , 32));
-//		printf("[gray] test.cpp:%s:%d, crc16:0x%X\n", __FUNCTION__, __LINE__, crc16(buf, i));
 		printf("[gray] test.cpp:%s:%d, crc16:0x%X\n", __FUNCTION__, __LINE__, crc16(buf, i));
 		printf("[gray] test.cpp:%s:%d, crc16_ccitt:0x%X\n", __FUNCTION__, __LINE__, crc16_ccitt(buf, i));
 
+		// crc32
 		make_crc_table();
 		printf("[gray] test.cpp:%s:%d, crc32:0x%X\n", __FUNCTION__, __LINE__, crc32(buf, i));
 
 
-	// CRC
+	// use crc library
+	// >> x crc fileName
 	} else if (!strcmp(argv[1], "crc")) {
 
 		printf("[gray] test.cpp:%s:%d\n", __FUNCTION__, __LINE__);
@@ -282,7 +282,6 @@ int main(int argc, char *argv[])
 	    do_ascii = FALSE;
 	    do_hex   = FALSE;
 
-
 	    crc_16 = 0;
 		crc_16_modbus = 0xffff;
 		crc_dnp = 0;
@@ -293,16 +292,13 @@ int main(int argc, char *argv[])
 		crc_kermit = 0;
 		crc_32 = 0xffffffffL;
 
-
 		prev_byte = 0;
 		fp = fopen(argv[2], "rb");
 
 		if (fp != NULL)
 		{
-
 			while ((ch = fgetc(fp)) != EOF)
 			{
-
 				crc_16 = update_crc_16(crc_16, (char) ch);
 				crc_16_modbus = update_crc_16(crc_16_modbus, (char) ch);
 				crc_dnp = update_crc_dnp(crc_dnp, (char) ch);
@@ -315,14 +311,12 @@ int main(int argc, char *argv[])
 
 				prev_byte = (char) ch;
 			}
-
 			fclose(fp);
 		}
 		else
 			printf("%s : cannot open file\n", argv[2]);
 
-
-	   crc_32 ^= 0xffffffffL;
+		crc_32 ^= 0xffffffffL;
 
 		crc_dnp = ~crc_dnp;
 		low_byte = (crc_dnp & 0xff00) >> 8;
@@ -354,15 +348,12 @@ int main(int argc, char *argv[])
 				crc_ccitt_1d0f, crc_kermit, crc_kermit, crc_dnp, crc_dnp,
 				crc_32, crc_32);
 
-
 	} else {
 
 		printf("not a case!! \n");
 
 	}
 	printf("=====================================\n");
-
-
 
 //	getchar();
 	return 0;
