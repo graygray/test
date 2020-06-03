@@ -5,6 +5,10 @@
 #include<assert.h>
 #include "lib_crc.h"
 
+// add at ubuntu 18.04
+#include<stdint.h>
+#include <string.h> 
+
 using namespace std; 
 
 #define MIN(a,b) (a>b) ? b : a
