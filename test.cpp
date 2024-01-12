@@ -32,8 +32,11 @@ void defaultFun(void) {
 	threads[0] = std::thread(thread1);
 	threads[1] = std::thread(thread2);
     for (auto& t: threads) {
-        t.join();
+        // t.join();
+        t.detach();
     }
+
+	xlog("%s:%d \n\r", __func__, __LINE__);
 }
 
 int main(int argc, char *argv[])
@@ -47,6 +50,7 @@ int main(int argc, char *argv[])
 	{
 		xlog("%s:%d, input more than 1 params... \n\r", __func__, __LINE__);
 		defaultFun();
+		getchar();
 		return -1;
 	}
 
@@ -190,7 +194,7 @@ int main(int argc, char *argv[])
 	}
 	xlog("%s:%d, ===================================== \n\r", __func__, __LINE__);
 
-//	getchar();
+	getchar();
 	return 0;
 
 }
