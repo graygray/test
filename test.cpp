@@ -11,7 +11,7 @@ void thread1(void) {
 	while (true)
 	{
 		xlog("%s:%d, counter:%d \n\r", __func__, __LINE__, counter++);
-		sleep(0.5);
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));	
 	}
 }
 
@@ -21,17 +21,19 @@ void thread2(void) {
 	while (true)
 	{
 		xlog("%s:%d, counter:%d \n\r", __func__, __LINE__, counter++);
-		sleep(0.5);
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));	
 	}
 }
 
 void defaultFun(void) {
 	xlog("%s:%d \n\r", __func__, __LINE__);
 
-	std::thread t1(thread1);
-	std::thread t2(thread2);
-	t1.join();
-	t2.join();
+	std::thread threads[2];
+	threads[0] = std::thread(thread1);
+	threads[1] = std::thread(thread2);
+    for (auto& t: threads) {
+        t.join();
+    }
 }
 
 int main(int argc, char *argv[])
